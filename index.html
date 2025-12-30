@@ -177,17 +177,16 @@
         import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- CONFIGURATION START ---
-        // REPLACE THE STRINGS BELOW WITH YOUR ACTUAL DATA FROM FIREBASE CONSOLE
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "AIzaSyAug-O4Wsv9UfWV39fjHMwjiwIlaGEf4Xg",
-            authDomain: "medimitra-771f5.firebaseapp.com",
-            projectId: "medimitra-771f5",
-            storageBucket: "medimitra-771f5.firebasestorage.app",
-            messagingSenderId: "589941534992",
-            appId: "1:589941534992:web:bb2f6f1905219fc20bb595",
-            measurementId: "G-S3KQNXS9W3"
+            apiKey: "AIzaSyDw3ZozNb_NJgv3l_7vN7XTXIPdMHEAtRM",
+  authDomain: "medimitra1-4fac0.firebaseapp.com",
+  projectId: "medimitra1-4fac0",
+  storageBucket: "medimitra1-4fac0.firebasestorage.app",
+  messagingSenderId: "158778950976",
+  appId: "1:158778950976:web:5c9108464a747e111026a5",
+  measurementId: "G-9B2FCCF52Z"
         };
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'medimitra-prod';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'medimitra-prod-v2';
         // --- CONFIGURATION END ---
 
         const app = initializeApp(firebaseConfig);
@@ -220,7 +219,10 @@
         };
 
         window.handleAuth = async () => {
-            if (!isAuthReady) return;
+            if (!isAuthReady) {
+                console.error("Auth is not ready. Is your config correct?");
+                return;
+            }
 
             const user = document.getElementById('auth-username').value.trim();
             const pass = document.getElementById('auth-password').value.trim();
@@ -239,6 +241,7 @@
                 
                 const cleanUser = user.toLowerCase().replace(/[^a-z0-9]/g, '');
                 const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', cleanUser);
+                
                 const userDoc = await getDoc(userRef);
 
                 if (isSignup) {
@@ -258,8 +261,8 @@
                     }
                 }
             } catch (e) {
-                console.error("Auth Error:", e);
-                err.innerText = "Database connection error. Check your Firebase Config.";
+                console.error("Connection Error:", e);
+                err.innerText = "Database connection error. Ensure Anonymous Auth & Test Mode are enabled in Firebase.";
                 err.classList.remove('hidden');
             } finally {
                 btn.disabled = false;
@@ -390,7 +393,7 @@
                     await signInAnonymously(auth);
                 }
             } catch (e) {
-                console.error("Auth Init Failed", e);
+                console.error("Auth Init Failed:", e);
                 const btn = document.getElementById('auth-btn');
                 if (btn) btn.innerText = "Config Error";
             }
