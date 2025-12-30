@@ -29,6 +29,15 @@
             border-bottom: 1px solid rgba(226, 232, 240, 0.8);
         }
 
+         
+
+        .glass-footer {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+
         .card-shadow {
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
         }
@@ -180,6 +189,34 @@
                 <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-100 animate-pulse h-20 sm:h-24"></div>
             </div>
         </main>
+
+        <!-- Persistent Bottom Footer for All Devices -->
+        <footer class="fixed bottom-0 inset-x-0 z-50 glass-footer flex flex-col items-center">
+            <!-- Navigation Icons -->
+            <div class="flex justify-around items-center w-full max-w-xl mx-auto px-6 py-3">
+                <button class="flex flex-col items-center gap-1 text-blue-600 transition-colors">
+                    <i data-lucide="home" class="w-6 h-6"></i>
+                    <span class="text-[10px] font-bold">Home</span>
+                </button>
+                <button onclick="window.toggleAddModal(true)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-500 transition-colors">
+                    <i data-lucide="plus-circle" class="w-6 h-6"></i>
+                    <span class="text-[10px] font-bold">Add</span>
+                </button>
+                
+                <button onclick="window.toggleSettings(true)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-blue-500 transition-colors">
+                    <i data-lucide="user" class="w-6 h-6"></i>
+                    <span class="text-[10px] font-bold">Profile</span>
+                </button>
+            </div>
+            <!-- Sub-footer Branding -->
+            <div class="w-full text-center pb-3 pt-2 border-t border-slate-100/50 bg-slate-50/50">
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-4 px-4">
+                    <p class="text-slate-500 text-[10px] font-bold tracking-tight">MediMitra: Your Health, Our Mission</p>
+                    <span class="hidden sm:inline text-slate-300">•</span>
+                    <p class="text-slate-600 text-[9px] font-medium uppercase tracking-wider">Made by Sheetal Bajaj</p>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <!-- Modals -->
