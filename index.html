@@ -2,176 +2,264 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" href="logo.png" type="image/x-icon">
   <link rel="icon" href="logo.png" type="image/png">
-    <title>MediMitra</title>
+    <title>MediMitra - Premium Health Companion</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
+        :root {
+            --primary: #2563eb;
+            --primary-soft: #eff6ff;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.04);
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
         }
 
-        .alert-pulse {
-            animation: pulse-border 1.5s infinite;
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
         }
 
-        @keyframes pulse-border {
-            0% { box-shadow: 0 0 0 0px rgba(59, 130, 246, 0.4); }
-            100% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
+        .med-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .border-rose-500 { border-color: #f43f5e; }
-        .bg-rose-100 { background-color: #ffe4e6; }
-        .text-rose-600 { color: #e11d48; }
-        .border-amber-500 { border-color: #f59e0b; }
-        .bg-amber-100 { background-color: #fef3c7; }
-        .text-amber-600 { color: #d97706; }
-        .border-emerald-500 { border-color: #10b981; }
-        .bg-emerald-100 { background-color: #d1fae5; }
-        .text-emerald-600 { color: #059669; }
-        .border-violet-500 { border-color: #8b5cf6; }
-        .bg-violet-100 { background-color: #ede9fe; }
-        .text-violet-600 { color: #7c3aed; }
+        @media (hover: hover) {
+            .med-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            }
+        }
+
+        .med-card:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .animate-slide {
+            animation: slideIn 0.4s ease-out forwards;
+        }
+
+        /* Color Variants for Tags */
+        .tag-blue { background-color: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe; }
+        .tag-orange { background-color: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; }
+        .tag-green { background-color: #f0fdf4; color: #15803d; border: 1px solid #dcfce7; }
+        .tag-indigo { background-color: #eef2ff; color: #4338ca; border: 1px solid #e0e7ff; }
+        .tag-rose { background-color: #fff1f2; color: #be123c; border: 1px solid #ffe4e6; }
+        .tag-amber { background-color: #fffbeb; color: #b45309; border: 1px solid #fef3c7; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transition: all 0.2s ease;
+        }
+
+        /* Prevent body scroll when modal is open */
+        .modal-open {
+            overflow: hidden;
+        }
     </style>
 </head>
-<body class="pb-24">
+<body class="pb-24 sm:pb-8">
 
     <!-- Auth Screen -->
-    <div id="auth-screen" class="fixed inset-0 z-[100] bg-blue-600 flex items-center justify-center p-6">
-        <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl">
-            <div class="flex flex-col items-center mb-8">
-                <div class=" p-2 rounded-xl text-blue-300 mb-2">
-                    <img src="logo.png" alt="MediMitra Logo" class="w-20 h-20">
-                    
+    <div id="auth-screen" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4 sm:p-6">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-[10%] -left-[10%] w-[60%] sm:w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[80px] sm:blur-[120px]"></div>
+            <div class="absolute -bottom-[10%] -right-[10%] w-[60%] sm:w-[40%] h-[40%] bg-indigo-600/20 rounded-full blur-[80px] sm:blur-[120px]"></div>
+        </div>
+        
+        <div class="bg-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 max-w-sm w-full shadow-2xl relative z-10 animate-slide">
+            <div class="flex flex-col items-center mb-8 sm:mb-10 text-center">
+                <div class="w-20 h-20 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center text-white mb-4 sm:mb-6 ">
+                    <img src="logo.png" alt="MediMitra Logo" class="w-25 h-25 sm:w-30 sm:h-30">
                 </div>
-                <h1 class="text-3xl font-bold text-slate-800">MediMitra</h1>
-                <p id="auth-toggle-text" class="text-slate-500 text-center">Because Every Dose Matters</p>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-700 tracking-tight">MediMitra</h1>
+                <p id="auth-toggle-text" class="text-slate-500 mt-2 font-medium text-sm sm:text-base">Because Every Dose Matters</p>
             </div>
             
-            <div class="space-y-4">
-                <input type="text" id="auth-username" placeholder="Username" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none">
-                <input type="password" id="auth-password" placeholder="Password" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none">
-                <button onclick="window.handleAuth()" id="auth-btn" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg disabled:bg-blue-300">
+            <div class="space-y-3 sm:space-y-4">
+                <div class="relative group">
+                    <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
+                    <input type="text" id="auth-username" placeholder="Username" class="w-full pl-12 pr-4 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all text-sm sm:text-base">
+                </div>
+                <div class="relative group">
+                    <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
+                    <input type="password" id="auth-password" placeholder="Password" class="w-full pl-12 pr-4 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all text-sm sm:text-base">
+                </div>
+                <button onclick="window.handleAuth()" id="auth-btn" class="w-full btn-primary text-white py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg shadow-xl disabled:opacity-50 mt-2 active:scale-[0.98] transition-transform">
                     Connecting...
                 </button>
-                <button onclick="window.toggleAuthMode()" id="auth-switch" class="w-full text-blue-600 text-sm font-semibold hover:underline">
-                    New user? Create unique account
+                <button onclick="window.toggleAuthMode()" id="auth-switch" class="w-full text-slate-500 text-xs sm:text-sm font-bold hover:text-blue-600 py-2 transition-colors">
+                    New user? Create secure account
                 </button>
             </div>
-            <p id="auth-error" class="text-red-500 text-xs mt-4 text-center hidden p-2 bg-red-50 rounded-lg border border-red-100"></p>
+            <p id="auth-error" class="text-rose-500 text-xs sm:text-sm mt-4 sm:mt-6 text-center hidden p-3 bg-rose-50 rounded-xl border border-rose-100 font-medium"></p>
         </div>
     </div>
 
     <!-- Main Content -->
-    <div id="app-content" class="hidden opacity-0 transition-opacity duration-500">
-        <nav class="sticky top-0 z-50 glass-card px-6 py-4 flex justify-between items-center mb-6">
-            <div class="flex items-center gap-2">
-                <h1 class="text-xl font-bold text-blue-600">MediMitra</h1>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="text-right flex flex-col items-end">
-                    <button onclick="window.toggleSettings(true)" class="text-sm font-bold text-slate-700 uppercase tracking-tight flex items-center gap-1">
-                        <span id="display-name"></span>
-                        <i data-lucide="settings" class="w-3 h-3"></i>
-                    </button>
+    <div id="app-content" class="hidden opacity-0 transition-opacity duration-700">
+        <nav class="sticky top-0 z-50 glass-nav px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div class="w-18 h-18 sm:w-18 sm:h-12  flex items-center justify-center text-white shadow-lg">
+                    
+                    <img src="logo.png" alt="MediMitra Logo" class="w-18 h-18 sm:w-20 sm:h-20">
                 </div>
-                <button onclick="window.logout()" class="p-2 text-slate-400 hover:text-red-500"><i data-lucide="log-out" class="w-5 h-5"></i></button>
+                <h1 class="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">MediMitra</h1>
+            </div>
+            <div class="flex items-center gap-1 sm:gap-2">
+                <button onclick="window.toggleSettings(true)" class="flex items-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl hover:bg-slate-100 transition-colors">
+                    <span id="display-name" class="text-xs sm:text-sm font-bold text-slate-700 max-w-[80px] sm:max-w-none truncate"></span>
+                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 sm:w-4 h-4 text-slate-400"></i>
+                </button>
             </div>
         </nav>
 
-        <main id="home-tab" class="container mx-auto px-4 max-w-lg">
-            <div class="flex justify-between items-center mb-6">
-                <div class="bg-white px-4 py-2 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-2">
-                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <p id="live-clock" class="text-lg font-mono font-bold text-slate-700">00:00:00</p>
+        <main class="container mx-auto px-4 sm:max-w-xl pt-6 sm:pt-8">
+            <!-- Hero Dashboard -->
+            <div class="bg-slate-900 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 mb-6 sm:mb-8 text-white relative overflow-hidden card-shadow">
+                <div class="relative z-10">
+                    <div class="flex justify-between items-start mb-6 sm:mb-10">
+                        <div class="max-w-[70%]">
+                            <p class="text-blue-400 font-bold text-[10px] sm:text-xs uppercase tracking-[0.2em] mb-1">Status Overview</p>
+                            <h2 class="text-xl sm:text-3xl font-extrabold mb-1">Everything's on track</h2>
+                            <p class="text-slate-400 text-xs sm:text-sm font-medium">Keep it up!</p>
+                        </div>
+                        <div class="bg-white/10 p-2 sm:p-3 rounded-xl sm:rounded-2xl backdrop-blur-md">
+                            <p id="live-clock" class="text-base sm:text-xl font-black font-mono">00:00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3 sm:gap-4">
+                        <div class="bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-4">
+                            <p class="text-slate-400 text-[8px] sm:text-[10px] uppercase font-bold mb-1 sm:mb-2">Completion</p>
+                            <div class="flex items-end gap-1.5 sm:gap-2">
+                                <span id="stat-percent" class="text-xl sm:text-2xl font-black">0%</span>
+                                <span class="text-[8px] sm:text-[10px] text-blue-400 font-bold mb-1">DONE</span>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-4">
+                            <p class="text-slate-400 text-[8px] sm:text-[10px] uppercase font-bold mb-1 sm:mb-2">Upcoming</p>
+                            <div class="flex items-end gap-1.5 sm:gap-2">
+                                <span id="stat-remaining" class="text-xl sm:text-2xl font-black">0</span>
+                                <span class="text-[8px] sm:text-[10px] text-orange-400 font-bold mb-1">LEFT</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button onclick="window.toggleAddModal(true)" class="bg-blue-600 text-white px-4 py-2 rounded-xl flex items-center gap-2 font-bold shadow-md active:scale-95 transition-transform">
-                    <i data-lucide="plus" class="w-4 h-4"></i> Add
+                <div class="absolute -right-10 -bottom-10 w-32 h-32 sm:w-40 sm:h-40 bg-blue-600/30 rounded-full blur-[50px] sm:blur-[60px]"></div>
+            </div>
+
+            <div class="flex justify-between items-center mb-6 px-1">
+                <h3 class="text-lg sm:text-xl font-extrabold text-slate-900">Your Schedule</h3>
+                <button onclick="window.toggleAddModal(true)" class="btn-primary text-white p-2.5 sm:p-3 rounded-xl sm:rounded-2xl flex items-center gap-2 font-bold shadow-lg shadow-blue-200">
+                    <i data-lucide="plus" class="w-5 h-5"></i>
                 </button>
             </div>
-            <div id="schedule-list" class="space-y-4"></div>
+
+            <div id="schedule-list" class="space-y-3 sm:space-y-4">
+                <!-- Skeletons while loading -->
+                <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-100 animate-pulse h-20 sm:h-24"></div>
+                <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-100 animate-pulse h-20 sm:h-24"></div>
+            </div>
         </main>
     </div>
 
-    <!-- Add Medicine Modal -->
-    <div id="add-modal" class="fixed inset-0 z-[150] bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-6">
-        <div class="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
-            <h2 class="text-2xl font-bold text-slate-800 mb-6">New Medication</h2>
-            <div class="space-y-4">
+    <!-- Modals -->
+    <div id="add-modal" class="fixed inset-0 z-[150] bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 sm:p-6">
+        <div class="bg-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 w-full max-w-md shadow-2xl animate-slide max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6 sm:mb-8">
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Add Medication</h2>
+                <button onclick="window.toggleAddModal(false)" class="p-2 text-slate-400 hover:bg-slate-50 rounded-lg sm:rounded-xl">
+                    <i data-lucide="x" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4 sm:space-y-6">
                 <div>
-                    <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Name</label>
-                    <input type="text" id="new-med-name" placeholder="Paracetamol" class="w-full px-4 py-3 rounded-xl border border-slate-100 bg-slate-50 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <label class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1 mb-1.5 sm:mb-2 block">Medication Name</label>
+                    <input type="text" id="new-med-name" placeholder="e.g. Aspirin" class="w-full px-4 py-3 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all text-sm sm:text-base">
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Dose</label>
-                        <input type="text" id="new-med-dose" placeholder="1 tab" class="w-full px-4 py-3 rounded-xl border border-slate-100 bg-slate-50 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <label class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1 mb-1.5 sm:mb-2 block">Dosage</label>
+                        <input type="text" id="new-med-dose" placeholder="e.g. 1 pill" class="w-full px-4 py-3 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all text-sm sm:text-base">
                     </div>
                     <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Time</label>
-                        <input type="time" id="new-med-time" class="w-full px-4 py-3 rounded-xl border border-slate-100 bg-slate-50 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <label class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1 mb-1.5 sm:mb-2 block">Set Time</label>
+                        <input type="time" id="new-med-time" class="w-full px-4 py-3 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-100 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all text-sm sm:text-base">
                     </div>
                 </div>
                 <div>
-                    <label class="text-[10px] font-bold text-slate-400 uppercase ml-1 mb-2 block">Tag Color</label>
-                    <div class="flex flex-wrap gap-3">
-                        <button onclick="window.selectColor('blue')" class="w-8 h-8 rounded-full bg-blue-500 ring-offset-2 ring-2 ring-blue-600" id="color-blue"></button>
-                        <button onclick="window.selectColor('orange')" class="w-8 h-8 rounded-full bg-orange-500 ring-offset-2 ring-2 ring-transparent" id="color-orange"></button>
-                        <button onclick="window.selectColor('green')" class="w-8 h-8 rounded-full bg-green-500 ring-offset-2 ring-2 ring-transparent" id="color-green"></button>
-                        <button onclick="window.selectColor('indigo')" class="w-8 h-8 rounded-full bg-indigo-500 ring-offset-2 ring-2 ring-transparent" id="color-indigo"></button>
-                        <button onclick="window.selectColor('rose')" class="w-8 h-8 rounded-full bg-rose-500 ring-offset-2 ring-2 ring-transparent" id="color-rose"></button>
-                        <button onclick="window.selectColor('amber')" class="w-8 h-8 rounded-full bg-amber-500 ring-offset-2 ring-2 ring-transparent" id="color-amber"></button>
+                    <label class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1 mb-2.5 sm:mb-3 block">Color Category</label>
+                    <div class="grid grid-cols-6 gap-2 sm:gap-4">
+                        <button onclick="window.selectColor('blue')" id="color-blue" class="w-full aspect-square rounded-full bg-blue-500 ring-4 ring-blue-100 border-2 border-white"></button>
+                        <button onclick="window.selectColor('orange')" id="color-orange" class="w-full aspect-square rounded-full bg-orange-500 ring-4 ring-transparent border-2 border-white"></button>
+                        <button onclick="window.selectColor('green')" id="color-green" class="w-full aspect-square rounded-full bg-green-500 ring-4 ring-transparent border-2 border-white"></button>
+                        <button onclick="window.selectColor('indigo')" id="color-indigo" class="w-full aspect-square rounded-full bg-indigo-500 ring-4 ring-transparent border-2 border-white"></button>
+                        <button onclick="window.selectColor('rose')" id="color-rose" class="w-full aspect-square rounded-full bg-rose-500 ring-4 ring-transparent border-2 border-white"></button>
+                        <button onclick="window.selectColor('amber')" id="color-amber" class="w-full aspect-square rounded-full bg-amber-500 ring-4 ring-transparent border-2 border-white"></button>
                     </div>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-4 mt-8">
-                <button onclick="window.toggleAddModal(false)" class="py-3 font-bold text-slate-500">Cancel</button>
-                <button onclick="window.saveNewMedicine()" id="save-med-btn" class="bg-blue-600 text-white py-3 rounded-xl font-bold shadow-lg">Save</button>
-            </div>
+            
+            <button onclick="window.saveNewMedicine()" id="save-med-btn" class="w-full btn-primary text-white py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg mt-8 sm:mt-10 shadow-xl active:scale-[0.98]">
+                Add Medication
+            </button>
         </div>
+    </div>
+
+    <!-- Alarm Modal -->
+    <div id="alarm-overlay" class="fixed inset-0 z-[200] bg-blue-600/95 backdrop-blur-2xl hidden flex-col items-center justify-center p-6 sm:p-8 text-center text-white">
+        <div class="bg-white rounded-full p-8 sm:p-10 mb-6 sm:mb-8 animate-bounce">
+            <i data-lucide="bell" class="w-12 h-12 sm:w-16 sm:h-16 text-blue-600"></i>
+        </div>
+        <p class="text-blue-200 text-xs sm:text-sm font-bold uppercase tracking-[0.3em] mb-4">Medication Alert</p>
+        <h2 class="text-3xl sm:text-5xl font-black mb-2 tracking-tight leading-tight">Time to take it</h2>
+        <p id="alarm-med-name" class="text-xl sm:text-3xl font-medium mb-10 sm:mb-12 text-white/80"></p>
+        <button onclick="window.acknowledgeAlarm()" class="w-full max-w-xs bg-white text-blue-600 py-5 sm:py-6 rounded-2xl sm:rounded-3xl text-xl sm:text-2xl font-black shadow-2xl active:scale-95 transition-all">
+            DONE, THANKS
+        </button>
     </div>
 
     <!-- Settings Modal -->
-    <div id="settings-modal" class="fixed inset-0 z-[160] bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-6">
-        <div class="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
-            <h2 class="text-2xl font-bold text-slate-800 mb-6">Settings</h2>
-            <div class="space-y-6">
-                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="volume-2" class="text-blue-600"></i>
-                        <span class="font-bold text-slate-700">Notification Sound</span>
+    <div id="settings-modal" class="fixed inset-0 z-[160] bg-slate-900/60 backdrop-blur-md hidden items-center justify-center p-4 sm:p-6">
+        <div class="bg-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 w-full max-w-md shadow-2xl animate-slide">
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-6 sm:mb-8">Account Settings</h2>
+            <div class="space-y-3 sm:space-y-4">
+                <div class="p-3 sm:p-4 bg-slate-50 rounded-xl sm:rounded-2xl flex items-center justify-between border border-slate-100">
+                    <div class="flex items-center gap-2 sm:gap-3">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 bg-blue-100 rounded-lg sm:rounded-xl flex items-center justify-center text-blue-600">
+                            <i data-lucide="bell" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        </div>
+                        <span class="font-bold text-sm sm:text-base text-slate-800">Alert Volume</span>
                     </div>
-                    <button onclick="window.testSound()" class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-lg font-bold">Test Sound</button>
+                    <button onclick="window.testSound()" class="text-[10px] sm:text-xs font-bold bg-white px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 active:bg-slate-100">Test</button>
                 </div>
-                <div class="p-4 bg-blue-50 text-blue-800 rounded-2xl text-xs flex gap-3">
-                    <i data-lucide="info" class="w-8 h-8 shrink-0"></i>
-                    <p>Keep this tab open for live notifications. Sounds will trigger if you have interacted with the page at least once.</p>
-                </div>
+                <button onclick="window.logout()" class="w-full p-3 sm:p-4 bg-rose-50 rounded-xl sm:rounded-2xl flex items-center gap-2 sm:gap-3 text-rose-600 font-bold border border-rose-100 active:bg-rose-100 transition-colors">
+                    <i data-lucide="log-out" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                    Sign Out
+                </button>
             </div>
-            <button onclick="window.toggleSettings(false)" class="w-full mt-8 py-3 bg-slate-800 text-white font-bold rounded-xl">Close</button>
+            <button onclick="window.toggleSettings(false)" class="w-full mt-6 sm:mt-8 py-4 sm:py-5 bg-slate-900 text-white font-bold rounded-xl sm:rounded-2xl active:scale-[0.98]">Close Settings</button>
         </div>
-    </div>
-
-    <!-- Alarm Overlay -->
-    <div id="alarm-overlay" class="fixed inset-0 z-[200] bg-slate-900/95 backdrop-blur-xl hidden flex-col items-center justify-center p-8 text-center">
-        <div class="bg-white rounded-full p-8 mb-8 alert-pulse">
-            <i data-lucide="bell-ring" class="w-16 h-16 text-blue-600"></i>
-        </div>
-        <h2 class="text-white text-3xl font-bold mb-2">Medicine Time!</h2>
-        <p id="alarm-med-name" class="text-blue-400 text-xl font-medium mb-12 uppercase tracking-widest"></p>
-        <button onclick="window.acknowledgeAlarm()" class="w-full max-w-xs bg-blue-600 text-white py-5 rounded-2xl text-xl font-bold shadow-xl active:scale-95 transition-transform">I've Taken It</button>
     </div>
 
     <script type="module">
@@ -182,12 +270,12 @@
         // --- CONFIGURATION START ---
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
             apiKey: "AIzaSyDw3ZozNb_NJgv3l_7vN7XTXIPdMHEAtRM",
-  authDomain: "medimitra1-4fac0.firebaseapp.com",
-  projectId: "medimitra1-4fac0",
-  storageBucket: "medimitra1-4fac0.firebasestorage.app",
-  messagingSenderId: "158778950976",
-  appId: "1:158778950976:web:5c9108464a747e111026a5",
-  measurementId: "G-9B2FCCF52Z"
+            authDomain: "medimitra1-4fac0.firebaseapp.com",
+            projectId: "medimitra1-4fac0",
+            storageBucket: "medimitra1-4fac0.firebasestorage.app",
+            messagingSenderId: "158778950976",
+            appId: "1:158778950976:web:5c9108464a747e111026a5",
+            measurementId: "G-9B2FCCF52Z"
         };
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'medimitra-prod-v2';
         // --- CONFIGURATION END ---
@@ -208,48 +296,39 @@
         alarmSound.loop = true;
 
         window.testSound = () => {
-            alarmSound.play().catch(e => console.warn("Browser blocked sound. Interact first."));
-            setTimeout(() => {
-                alarmSound.pause();
-                alarmSound.currentTime = 0;
-            }, 3000);
+            alarmSound.play().catch(e => console.warn("Interaction needed"));
+            setTimeout(() => { alarmSound.pause(); alarmSound.currentTime = 0; }, 2000);
         };
 
         window.toggleAuthMode = () => {
             isSignup = !isSignup;
-            document.getElementById('auth-btn').innerText = isSignup ? 'Create Account' : 'Login';
-            document.getElementById('auth-switch').innerText = isSignup ? 'Back to Login' : 'Create unique account';
+            document.getElementById('auth-btn').innerText = isSignup ? 'Secure Create' : 'Enter Mitra';
+            document.getElementById('auth-switch').innerText = isSignup ? 'I already have a key' : 'New user? Create secure account';
         };
 
         window.handleAuth = async () => {
-            if (!isAuthReady) {
-                console.error("Auth is not ready. Is your config correct?");
-                return;
-            }
-
+            if (!isAuthReady) return;
             const user = document.getElementById('auth-username').value.trim();
             const pass = document.getElementById('auth-password').value.trim();
             const err = document.getElementById('auth-error');
             const btn = document.getElementById('auth-btn');
 
             if (!user || !pass) {
-                err.innerText = "Fill all fields";
+                err.innerText = "Identification required";
                 err.classList.remove('hidden');
                 return;
             }
 
             try {
                 btn.disabled = true;
-                btn.innerText = "Checking...";
-                
+                btn.innerText = "Authenticating...";
                 const cleanUser = user.toLowerCase().replace(/[^a-z0-9]/g, '');
                 const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', cleanUser);
-                
                 const userDoc = await getDoc(userRef);
 
                 if (isSignup) {
                     if (userDoc.exists()) {
-                        err.innerText = "Username taken. Please choose another.";
+                        err.innerText = "Username already claimed.";
                         err.classList.remove('hidden');
                     } else {
                         await setDoc(userRef, { password: btoa(pass), createdAt: Date.now(), username: cleanUser });
@@ -259,17 +338,16 @@
                     if (userDoc.exists() && userDoc.data().password === btoa(pass)) {
                         window.proceedLogin(cleanUser);
                     } else {
-                        err.innerText = "Incorrect username or password.";
+                        err.innerText = "Invalid credentials.";
                         err.classList.remove('hidden');
                     }
                 }
             } catch (e) {
-                console.error("Connection Error:", e);
-                err.innerText = "Database connection error. Ensure Anonymous Auth & Test Mode are enabled in Firebase.";
+                err.innerText = "Connection issue.";
                 err.classList.remove('hidden');
             } finally {
                 btn.disabled = false;
-                btn.innerText = isSignup ? 'Create Account' : 'Login';
+                btn.innerText = isSignup ? 'Secure Create' : 'Enter Mitra';
             }
         };
 
@@ -290,27 +368,34 @@
             document.getElementById('display-name').innerText = username;
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('app-content').classList.remove('hidden');
-            document.getElementById('app-content').style.opacity = '1';
+            setTimeout(() => { document.getElementById('app-content').style.opacity = '1'; }, 10);
             
             if (unsubscribeMeds) unsubscribeMeds();
             const qMeds = collection(db, 'artifacts', appId, 'users', auth.currentUser.uid, 'meds');
             unsubscribeMeds = onSnapshot(qMeds, (snapshot) => {
                 medications = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderSchedule();
-            }, (error) => console.error("Snapshot error:", error));
+                updateStats();
+            });
 
             if (!window.clockStarted) {
                 window.clockStarted = true;
                 setInterval(() => {
                     const now = new Date();
-                    const hh = now.getHours().toString().padStart(2,'0');
-                    const mm = now.getMinutes().toString().padStart(2,'0');
-                    const timeStr = `${hh}:${mm}`;
-                    document.getElementById('live-clock').innerText = now.toLocaleTimeString();
+                    const timeStr = now.getHours().toString().padStart(2,'0') + ":" + now.getMinutes().toString().padStart(2,'0');
+                    document.getElementById('live-clock').innerText = timeStr;
                     checkAlarms(timeStr);
                 }, 1000);
             }
-            lucide.createIcons();
+        }
+
+        function updateStats() {
+            const total = medications.length;
+            const taken = medications.filter(m => m.takenToday).length;
+            const remaining = total - taken;
+            const percent = total === 0 ? 0 : Math.round((taken / total) * 100);
+            document.getElementById('stat-percent').innerText = `${percent}%`;
+            document.getElementById('stat-remaining').innerText = remaining;
         }
 
         function checkAlarms(time) {
@@ -320,7 +405,7 @@
                 document.getElementById('alarm-med-name').innerText = med.name;
                 document.getElementById('alarm-overlay').classList.remove('hidden');
                 document.getElementById('alarm-overlay').classList.add('flex');
-                alarmSound.play().catch(e => console.log("Sound interaction required"));
+                alarmSound.play().catch(e => console.log("Sound interaction needed"));
             }
         }
 
@@ -336,14 +421,27 @@
             activeAlarmId = null;
         };
 
-        window.toggleAddModal = (s) => document.getElementById('add-modal').classList.toggle('hidden', !s).toggle('flex', s);
-        window.toggleSettings = (s) => document.getElementById('settings-modal').classList.toggle('hidden', !s).toggle('flex', s);
+        window.toggleAddModal = (s) => {
+            const el = document.getElementById('add-modal');
+            el.classList.toggle('hidden', !s);
+            el.classList.toggle('flex', s);
+            document.body.classList.toggle('modal-open', s);
+        };
+        window.toggleSettings = (s) => {
+            const el = document.getElementById('settings-modal');
+            el.classList.toggle('hidden', !s);
+            el.classList.toggle('flex', s);
+            document.body.classList.toggle('modal-open', s);
+        };
 
         window.selectColor = (c) => {
             selectedColor = c;
             ['blue', 'orange', 'green', 'indigo', 'rose', 'amber'].forEach(col => {
                 const el = document.getElementById('color-'+col);
-                if (el) el.classList.toggle('ring-blue-600', col === c);
+                if (el) {
+                    el.classList.toggle('ring-blue-100', col === c);
+                    el.classList.toggle('ring-transparent', col !== c);
+                }
             });
         };
 
@@ -370,18 +468,28 @@
 
         function renderSchedule() {
             const list = document.getElementById('schedule-list');
-            list.innerHTML = medications.length ? "" : `<div class="text-center py-12 text-slate-400">No active medicines</div>`;
+            list.innerHTML = medications.length ? "" : `<div class="text-center py-20 animate-slide"><div class="text-slate-200 mb-4"><i data-lucide="calendar-plus" class="w-16 h-16 mx-auto"></i></div><p class="text-slate-400 font-bold">Plan your medications</p></div>`;
             [...medications].sort((a,b) => a.time.localeCompare(b.time)).forEach(med => {
                 const div = document.createElement('div');
-                div.className = `glass-card rounded-3xl p-5 flex items-center gap-4 border-l-8 border-${med.color}-500 ${med.takenToday ? 'opacity-40' : ''}`;
+                div.className = `med-card bg-white rounded-2xl sm:rounded-[2rem] p-4 sm:p-6 flex items-center gap-4 sm:gap-5 border border-slate-100 card-shadow ${med.takenToday ? 'opacity-40 grayscale-[0.5]' : ''}`;
                 div.innerHTML = `
-                    <div class="bg-${med.color}-100 p-3 rounded-2xl text-${med.color}-600"><i data-lucide="pill"></i></div>
-                    <div class="flex-1">
-                        <h3 class="font-bold text-slate-800">${med.name}</h3>
-                        <p class="text-xs text-slate-500 font-medium">${med.dose} • ${med.time}</p>
+                    <div class="tag-${med.color} w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0">
+                        <i data-lucide="pill" class="w-6 h-6 sm:w-7 sm:h-7"></i>
                     </div>
-                    <button onclick="window.deleteMed('${med.id}')" class="p-2 text-slate-300 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                    <div class="${med.takenToday ? 'text-green-500' : 'text-slate-200'}"><i data-lucide="check-circle" class="w-7 h-7"></i></div>
+                    <div class="flex-1 overflow-hidden">
+                        <h3 class="font-extrabold text-sm sm:text-base text-slate-900 truncate">${med.name}</h3>
+                        <p class="text-[10px] sm:text-xs text-slate-500 font-bold flex items-center gap-1">
+                            <i data-lucide="clock" class="w-3 h-3"></i> ${med.time} • ${med.dose || 'Dosage'}
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-1 sm:gap-3">
+                        <button onclick="window.deleteMed('${med.id}')" class="p-2 text-slate-300 hover:text-rose-500 transition-colors">
+                            <i data-lucide="trash-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        </button>
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ${med.takenToday ? 'bg-green-500 text-white shadow-lg shadow-green-100' : 'bg-slate-50 border border-slate-100 text-slate-200'}">
+                            <i data-lucide="check" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        </div>
+                    </div>
                 `;
                 list.appendChild(div);
             });
@@ -396,9 +504,8 @@
                     await signInAnonymously(auth);
                 }
             } catch (e) {
-                console.error("Auth Init Failed:", e);
                 const btn = document.getElementById('auth-btn');
-                if (btn) btn.innerText = "Config Error";
+                if (btn) btn.innerText = "Retry Config";
             }
         };
         initAuth();
@@ -407,7 +514,7 @@
             if (user) {
                 isAuthReady = true;
                 const btn = document.getElementById('auth-btn');
-                if (btn) btn.innerText = isSignup ? 'Create Account' : 'Login';
+                if (btn) btn.innerText = isSignup ? 'Secure Create' : 'Enter Mitra';
                 const savedUser = localStorage.getItem('medimitra_user');
                 if (savedUser) setupApp(savedUser);
             }
