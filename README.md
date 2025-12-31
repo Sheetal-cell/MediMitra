@@ -1,5 +1,5 @@
 # MediMitra - Because every dose matters
-♾️Try MediMitra by clicking on the link below:⏬
+♾️Try MediMitra by clicking on the link :
 https://medi-mitra-two.vercel.app/
 
 MediMitra is a premium, web-based health application designed to help users manage their medication schedules with ease and precision. Built with a "Mobile-First" philosophy, it offers a seamless experience across all devices, featuring real-time alerts, cloud synchronization, and a clean, modern UI.
